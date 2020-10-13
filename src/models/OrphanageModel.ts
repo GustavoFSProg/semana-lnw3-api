@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
-// import 'reflect-metadata'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+  Index,
+} from 'typeorm'
+import Image from '../models/Images'
 
 @Entity('orphanages')
 export default class Orphanage {
@@ -7,6 +14,7 @@ export default class Orphanage {
   id: number
 
   @Column()
+  @Index({ unique: true })
   name: string
 
   @Column()
@@ -26,4 +34,10 @@ export default class Orphanage {
 
   @Column()
   open_on_weekends: boolean
+
+  @OneToMany(() => Image, (image) => image.orphanage, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinColumn({ name: 'orphanage_id' })
+  images: Image[]
 }
