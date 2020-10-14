@@ -1,13 +1,19 @@
 import { getRepository } from 'typeorm'
+import Orphanage from '../models/OrphanageModel'
 import orphanages from '../models/OrphanageModel.ts'
+import orphanages_view from '../views/orphanages_view'
+import orphanage_views from '../views/orphanages_view'
+import * as yup from 'yup'
 
 async function getAll(req, res) {
   try {
     const orphanagesRepository = getRepository(orphanages)
 
-    const data = await orphanagesRepository.find()
+    const data = await orphanagesRepository.find({
+      relations: ['images'],
+    })
 
-    return res.status(200).json(data)
+    return res.status(200).json(orphanages_view.renderMany(data))
   } catch (error) {
     return res.status(200).json(error)
   }
@@ -19,9 +25,11 @@ async function getById(req, res) {
 
     const orphanagesRepository = getRepository(orphanages)
 
-    const data = await orphanagesRepository.findOneOrFail(id)
+    const data = await orphanagesRepository.findOneOrFail(id, {
+      relations: ['images'],
+    })
 
-    return res.status(200).json(data)
+    return res.status(200).json(orphanages_view.render(data))
   } catch (error) {
     return res.status(200).json(error)
   }
@@ -47,7 +55,7 @@ async function Create(req, res) {
       return { path: image.filename }
     })
 
-    const orfanatos = orphanagesRepository.create({
+    const data = {
       name,
       latitude,
       longitude,
@@ -56,7 +64,28 @@ async function Create(req, res) {
       opening_hours,
       open_on_weekends,
       images,
+    }
+
+    const schema = yup.object().shape({
+      name: yup.string().required(),
+      latitude: yup.number().required(),
+      longitude: yup.number().required(),
+      about: yup.string().required().max(300),
+      instructions: yup.string().required(),
+      opening_hours: yup.string().required(),
+      open_on_weekends: yup.boolean().required(),
+      images: yup.array(
+        yup.object().shape({
+          path: yup.string().required(),
+        })
+      ),
     })
+
+    await schema.validate(data, {
+      abortEarly: false,
+    })
+
+    const orfanatos = orphanagesRepository.create(data)
 
     await orphanagesRepository.save(orfanatos)
 
