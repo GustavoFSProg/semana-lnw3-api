@@ -5,10 +5,13 @@
   "repository": "git@github.com:GustavoFSProg/semana-lnw3-api.git",
   "author": "Gustavo <gustavosohne38@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "12.16.x"
+  },
   "scripts": {
     "dev": "ts-node-dev  --transpile-only src/server.ts",
     "start": "NODE_ENV=production node dist",
-    "build": "babel src -d dist",
+    "build": "babel src/server.ts -d dist",
     "lint": "eslint --ext .js --ignore-path .gitignore .",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
