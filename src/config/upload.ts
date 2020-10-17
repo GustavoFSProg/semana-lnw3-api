@@ -3,7 +3,7 @@ import path from 'path'
 
 export default {
   storage: new multer.diskStorage({
-    destination: path.join(__dirname, '..', '..', 'uploads'),
+    destination: path.resolve(__dirname, '..', '..', 'uploads'),
     filename: (req, file, cb) => {
       const fileName = `${Date.now()}-${file.originalname}`
 

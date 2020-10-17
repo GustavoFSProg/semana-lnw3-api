@@ -21,7 +21,7 @@ app.use('/', routes)
 
 app.use(errorhandler)
 
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 
 // app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 const { PORT } = process.env
