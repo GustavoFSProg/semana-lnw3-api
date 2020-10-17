@@ -21,7 +21,10 @@ app.use(routes)
 
 app.use(errorhandler)
 
-app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
+app.use(
+  '/uploads',
+  express.static(path.resolve('https://happy-nlw3-app.herokuapp.com/uploads'))
+)
 
 // app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 const { PORT } = process.env
