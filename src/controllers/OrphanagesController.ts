@@ -1,11 +1,10 @@
 import { getRepository } from 'typeorm'
-import Orphanage from '../models/OrphanageModel'
-import orphanages from '../models/OrphanageModel.ts'
+import orphanages from '../models/OrphanageModel'
 import orphanages_view from '../views/orphanages_view'
-import orphanage_views from '../views/orphanages_view'
 import * as yup from 'yup'
+import { Request, Response } from 'express'
 
-async function getAll(req, res) {
+async function getAll(req: Request, res: Response) {
   try {
     const orphanagesRepository = getRepository(orphanages)
 
@@ -19,7 +18,7 @@ async function getAll(req, res) {
   }
 }
 
-async function getById(req, res) {
+async function getById(req: Request, res: Response) {
   try {
     const { id } = req.params
 
@@ -35,7 +34,7 @@ async function getById(req, res) {
   }
 }
 
-async function Create(req, res) {
+async function Create(req: Request, res: Response) {
   try {
     const {
       name,
@@ -46,6 +45,8 @@ async function Create(req, res) {
       opening_hours,
       open_on_weekends,
     } = req.body
+
+    console.log(req.body)
 
     const orphanagesRepository = getRepository(orphanages)
 
