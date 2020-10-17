@@ -14,7 +14,7 @@ export class createOrphanages1602600090979 implements MigrationInterface {
             isGenerated: true,
             generationStrategy: 'increment',
           },
-          { name: 'name', type: 'varchar', isUnique: true },
+          { name: 'name', type: 'varchar' },
           { name: 'opening_hours', type: 'varchar' },
 
           {

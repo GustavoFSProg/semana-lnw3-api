@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { getRepository } from 'typeorm'
 import orphanages from '../models/OrphanageModel'
 import orphanages_view from '../views/orphanages_view'

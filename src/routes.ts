@@ -5,12 +5,10 @@ import multer from 'multer'
 import uploadConfig from './config/upload'
 
 const upload = multer(uploadConfig)
-const routes = new Router()
-
-// , upload.array('images')
+const routes = Router()
 
 routes.get('/', OrphanagesController.getAll)
-routes.post('/orphanages', OrphanagesController.Create)
+routes.post('/orphanages', upload.array('images'), OrphanagesController.Create)
 routes.get('/:id', OrphanagesController.getById)
 
 export default routes
