@@ -12,11 +12,3 @@ export default {
   }),
 }
 
-// export default {
-//   storage: new multer.diskStorage({
-//     destination: path.resolve(__dirname, '..', '..', 'uploads'),
-//     filename: function (_req, file, cb) {
-//       cb(null, file.originalname)
-//     },
-//   }),
-// }
