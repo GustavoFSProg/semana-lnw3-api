@@ -47,8 +47,6 @@ async function Create(req: Request, res: Response) {
       open_on_weekends,
     } = req.body
 
-    console.log(req.body)
-
     const orphanagesRepository = getRepository(orphanages)
 
     const requestImages = req.files as Express.Multer.File[]

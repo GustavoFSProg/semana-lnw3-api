@@ -1,14 +1,7 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  JoinColumn,
-  Index,
-} from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm'
 
 @Entity('users')
-export default class Orphanage {
+export default class usersModel {
   @PrimaryGeneratedColumn('increment')
   id: number
 
