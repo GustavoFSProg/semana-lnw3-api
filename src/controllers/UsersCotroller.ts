@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import { Request, Response } from 'express'
 import md5 from 'md5'
 import { generateToken } from '../services/Token'
-import jwt from 'jsonwebtoken'
+import send from '../services/email-service'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -39,10 +39,31 @@ async function create(req: Request, res: Response) {
 
     const token = await generateToken(data)
 
+    await send(req, res)
+
     return res.status(201).send({ mensagem: 'Deu certo', token })
   } catch (error) {
     return res.status(400).send({ mensagem: 'Deu errado!!', error })
   }
 }
 
-export default { create, getAll }
+async function login(req: Request, res: Response) {
+  try {
+    const data = { name: req.body.name, password: req.body.password }
+
+    const UsersRepository = getRepository(usersModel)
+
+    const found = await UsersRepository.find(data)
+
+    if (!found) {
+      return res.status(400).send({ message: 'Usuario não encontrado' })
+    }
+    const token = await generateToken(data)
+
+    return res.status(200).send({ msg: 'Login efetuado com sucesso!', token })
+  } catch (error) {
+    return res.status(400).send({ msg: 'Erro no login', error })
+  }
+}
+
+export default { create, getAll, login }

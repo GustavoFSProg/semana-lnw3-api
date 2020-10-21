@@ -13,5 +13,6 @@ routes.post('/orphanages', upload.array('images'), OrphanagesController.Create)
 routes.get('/orphanages/:id', OrphanagesController.getById)
 routes.get('/users', UsersController.getAll)
 routes.post('/users', UsersController.create)
+routes.post('/users/login', UsersController.login)
 
 export default routes
