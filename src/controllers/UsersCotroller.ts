@@ -5,6 +5,11 @@ import users_view from '../views/users_view'
 import * as yup from 'yup'
 import { Request, Response } from 'express'
 import md5 from 'md5'
+import { generateToken } from '../services/Token'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 async function getAll(req: Request, res: Response) {
   try {
@@ -18,10 +23,6 @@ async function getAll(req: Request, res: Response) {
   }
 }
 
-// async function getAll(req: Request, res: Response) {
-//   return res.send('Entrou na colcete!')
-// }
-
 async function create(req: Request, res: Response) {
   try {
     const data = {
@@ -32,10 +33,13 @@ async function create(req: Request, res: Response) {
 
     const UsersRepository = getRepository(usersModel)
 
-    const users = UsersRepository.create(data)
+    const users = await UsersRepository.create(data)
 
     await UsersRepository.save(users)
-    return res.status(201).send({ mensagem: 'Deu certo', data })
+
+    const token = await generateToken(data)
+
+    return res.status(201).send({ mensagem: 'Deu certo', token })
   } catch (error) {
     return res.status(400).send({ mensagem: 'Deu errado!!', error })
   }
