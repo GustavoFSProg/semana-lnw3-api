@@ -17,8 +17,11 @@ routes.post(
   OrphanagesController.Create
 )
 routes.get('/orphanages/:id', OrphanagesController.getById)
-routes.get('/users', Autorize, UsersController.getAll)
-routes.post('/users', Autorize, UsersController.create)
+routes.get('/users', UsersController.getAll)
+routes.delete('/users/del', UsersController.removeAll)
+routes.post('/forgot_password', UsersController.forgotPassword)
+routes.post('/reset_password/:id', UsersController.resetPassword)
+routes.post('/users', UsersController.create)
 routes.post('/users/login', UsersController.login)
 
 export default routes

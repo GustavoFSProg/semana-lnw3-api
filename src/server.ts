@@ -22,7 +22,6 @@ app.use(errorhandler)
 
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 
-// app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 const { PORT } = process.env
 
 app.listen(PORT, console.log(`API - Server on PORT: ${PORT}`))

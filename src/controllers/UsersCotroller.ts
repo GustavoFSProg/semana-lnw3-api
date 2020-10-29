@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { Request, Response } from 'express'
 import md5 from 'md5'
 import { generateToken } from '../services/Token'
+import sendCreate from '../services/email-create'
 import send from '../services/email-service'
 import dotenv from 'dotenv'
 
@@ -39,7 +40,7 @@ async function create(req: Request, res: Response) {
 
     const token = await generateToken(data)
 
-    await send(req, res)
+    await sendCreate(req)
 
     return res.status(201).send({ mensagem: 'Deu certo', token })
   } catch (error) {
@@ -49,7 +50,7 @@ async function create(req: Request, res: Response) {
 
 async function login(req: Request, res: Response) {
   try {
-    const data = { name: req.body.name, password: req.body.password }
+    const data = { email: req.body.email, password: req.body.password }
 
     const UsersRepository = getRepository(usersModel)
 
@@ -66,4 +67,56 @@ async function login(req: Request, res: Response) {
   }
 }
 
-export default { create, getAll, login }
+async function forgotPassword(req: Request, res: Response) {
+  const data = { email: req.body.email, name: req.body.name }
+  const token = await generateToken(data)
+
+  send(req, token)
+
+  return res.status(200).send({ msg: 'Acesse seu emial e use o Token' })
+}
+
+async function removeAll(req: Request, res: Response) {
+  try {
+    const UsersRepository = getRepository(usersModel)
+
+    await UsersRepository.delete({})
+
+    return res.status(200).send({ message: 'Tudo apagado!' })
+  } catch (error) {
+    return res.status(400).send({ message: 'Erro, tudo cagado!!!' })
+  }
+}
+
+async function resetPassword(req: Request, res: Response) {
+  try {
+    const password = md5(req.body.password)
+    const UsersRepository = getRepository(usersModel)
+    const token =
+      req.body.token || req.query.token || req.headers['x-access-token']
+
+    if (!token) {
+      return res.send({ menssagem: 'token invalido' })
+    } else {
+      await UsersRepository.update(
+        {
+          email: req.body.email,
+        },
+        { password }
+      )
+    }
+
+    return res.status(200).send({ msg: 'Senha atualizada com sucesso' })
+  } catch (error) {
+    return res.status(400).send({ msg: 'Deu erro', error })
+  }
+}
+
+export default {
+  create,
+  getAll,
+  removeAll,
+  login,
+  forgotPassword,
+  resetPassword,
+}
