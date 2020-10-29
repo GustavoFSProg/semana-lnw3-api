@@ -5,7 +5,7 @@ import { Request } from 'express'
 
 dotenv.config()
 
-async function send(req: Request, token = null) {
+async function sendCreate(req: Request) {
   await sendgrid.setApiKey(process.env.SENDGRID_API_KEY)
 
   const msg = {
@@ -15,10 +15,10 @@ async function send(req: Request, token = null) {
     text: 'Cadastro Node.js',
     html:
       `${'<strong>Olá '}${req.body.name}, ` +
-      ` Esqueceu sua senha? Utilize esse token para redefinir a senha: </strong> Token: ${token}`,
+      ` Obrigado por se cadastrar aqui no nosso site! </strong>`,
   }
   sendgrid.send(msg)
   return sendgrid
 }
 
-export default send
+export default sendCreate
