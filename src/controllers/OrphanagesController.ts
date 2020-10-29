@@ -63,6 +63,7 @@ async function Create(req: Request, res: Response) {
       instructions,
       opening_hours,
       open_on_weekends: open_on_weekends === 'true',
+      status: false,
       images,
     }
 

@@ -12,7 +12,7 @@ const routes = Router()
 routes.get('/', OrphanagesController.getAll)
 routes.post(
   '/orphanages',
-  Autorize,
+  // Autorize,
   upload.array('images'),
   OrphanagesController.Create
 )
@@ -20,6 +20,7 @@ routes.get('/orphanages/:id', OrphanagesController.getById)
 routes.get('/users', UsersController.getAll)
 routes.post('/forgot_password', UsersController.forgotPassword)
 routes.post('/reset_password/:id', UsersController.resetPassword)
+// routes.delete('/users/del', UsersController.removeAll)
 routes.post('/users', UsersController.create)
 routes.post('/users/login', UsersController.login)
 
