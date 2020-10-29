@@ -12,7 +12,7 @@ const routes = Router()
 routes.get('/', OrphanagesController.getAll)
 routes.post(
   '/orphanages',
-  // Autorize,
+  Autorize,
   upload.array('images'),
   OrphanagesController.Create
 )
